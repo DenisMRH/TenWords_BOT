@@ -15,19 +15,9 @@ import (
 func main() {
 	// Инициализация бота с использованием API токена
 
-	
-	err := godotenv.Load("C:\Users\denis\Documents\go\TelegramBOT\token.env")
-		if err != nil {
-		log.Fatalf("Ошибка загрузки token.env файла %v", err)
-	}
+	TELEGRAM_BOT_TOKEN := importEnv("token.env", "TELEGRAM_BOT_TOKEN")
 
-	token := os.Getenv("TELEGRAM_BOT_TOKEN")
-	if token == "" {
-		log.Fatal("Токен не найден в token.env")
-	}
-	fmt.Println("Токен успешно загружен")
-
-	bot, err := tgbotapi.NewBotAPI(token)
+	bot, err := tgbotapi.NewBotAPI(TELEGRAM_BOT_TOKEN)
 	if err != nil {
 		// Если ошибка при создании бота - выводим её и завершаем работу
 		log.Panic("Ошибка инициализации бота:", err)
@@ -71,4 +61,18 @@ func main() {
 			log.Panic("Ошибка отправки сообщения:", err)
 		}
 	}
+}
+
+func importEnv(fileName, varName string) (variable string) {
+	err := godotenv.Load(fileName)
+	if err != nil {
+		log.Fatalf("Ошибка импорта файла %v", err)
+	}
+
+	variable = os.Getenv(varName)
+	if variable == "" {
+		log.Fatalf("Переменная %v не найдена.")
+	}
+	fmt.Println("Переменная ", varName, " из файла ", fileName, " импортирована!")
+	return
 }
