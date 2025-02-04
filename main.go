@@ -71,7 +71,7 @@ func importEnv(fileName, varName string) (variable string) {
 
 	variable = os.Getenv(varName)
 	if variable == "" {
-		log.Fatalf("Переменная %v не найдена.")
+		log.Fatalf("Переменная %v не найдена.", variable)
 	}
 	fmt.Println("Переменная ", varName, " из файла ", fileName, " импортирована!")
 	return
